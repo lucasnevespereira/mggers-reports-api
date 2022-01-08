@@ -10,5 +10,9 @@ type Report struct {
 
 type Position struct {
 	Latitude  int `json:"latitude"`
-	longitude int `json:"longitude"`
+	Longitude int `json:"longitude"`
+}
+
+type CreateReport struct {
+	Position   Position  `json:"position"`
 }
