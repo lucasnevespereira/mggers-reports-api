@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"mggers-reports-api/router"
+	"mggers-reports-api/services"
 	"mggers-reports-api/utils"
 )
 
 type App struct {
 	Config utils.AppConfig
 	Router *gin.Engine
+	Services *services.Services
 }
 
 func New() *App {
@@ -19,8 +21,13 @@ func New() *App {
 }
 
 func (a *App) setup() {
-	a.Config = utils.LoadConfig()
-	a.Router = router.Init()
+	config := utils.LoadConfig()
+	services := services.Init(config)
+	router := router.Init(services)
+
+	a.Config = config
+	a.Router = router
+	a.Services = services
 }
 
 func (a *App) Run() {
