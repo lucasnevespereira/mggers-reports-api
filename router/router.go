@@ -2,17 +2,19 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"mggers-reports-api/handlers"
 	"mggers-reports-api/services"
 )
 
-func Init(services *services.Services) *gin.Engine {
-	r := gin.New()
-	setupRoutes(r, services)
-	return r
+func New(service *services.Service) *gin.Engine {
+	router := gin.New()
+	setupRoutes(router, service)
+	return router
 }
 
-func setupRoutes(r *gin.Engine, services *services.Services) {
-	r.GET("/", handlers.GetHealth)
-	r.POST("/api/create", handlers.Create(services.ReportsService))
+func setupRoutes(r *gin.Engine, s *services.Service) {
+	r.GET("/api/health", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"status": "up",
+		})
+	})
 }

@@ -1,36 +1,46 @@
 package app
 
 import (
+	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
+	"mggers-reports-api/database"
 	"mggers-reports-api/router"
 	"mggers-reports-api/services"
-	"mggers-reports-api/utils"
 )
 
 type App struct {
-	Config utils.AppConfig
-	Router *gin.Engine
-	Services *services.Services
+	router *gin.Engine
 }
 
 func New() *App {
 	app := &App{}
-	app.setup()
+	if err := app.setup(); err != nil {
+		log.Printf("setting up: %v", err)
+	}
 	return app
 }
 
-func (a *App) setup() {
-	config := utils.LoadConfig()
-	services := services.Init(config)
-	router := router.Init(services)
+func (app *App) setup() error {
+	fmt.Println("setting up app")
 
-	a.Config = config
-	a.Router = router
-	a.Services = services
+	client, err := database.Init(context.Background())
+	if err != nil {
+		return err
+	}
+
+	db := database.New(client, "mggers-reports")
+
+	service := services.New(db)
+	r := router.New(service)
+	app.router = r
+
+	return nil
 }
 
-func (a *App) Run() {
-	port := a.Config.Port
-	a.Router.Run(fmt.Sprintf(":%d", port))
+
+func (app *App) Run() {
+	port := 9000
+	app.router.Run(fmt.Sprintf(":%d", port))
 }

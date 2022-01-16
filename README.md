@@ -3,23 +3,35 @@
 ### Usage
 
 ```
-make run
+make start
 ```
 
-### Overwrite config
-
-Create a ``local/env.sh`` <br>
-
-Overwrite variables by exporting ``CONF_<VAR>``
-
-<i>e.g.</i>
-
 ```
-#!/bin/bash
-
-export CONF_PORT=3005
+make stop
 ```
 
-Then source them before running app
+##### Docker logs
+```
+make api-logs
+```
 
-````source local/env````
+```
+make db-logs
+```
+
+### Use Envs
+
+Create a `/local` directory with a `env.sh` and export an env variable
+```
+export test_env=postgres
+```
+
+Source file
+```
+source local/env.sh
+```
+
+Use in code
+```
+os.GetEnv("test_env")
+```
