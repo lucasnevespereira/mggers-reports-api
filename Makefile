@@ -1,6 +1,9 @@
 run:
 	go run *.go
 
+dev:
+	docker-compose up
+
 start:
 	docker-compose up -d
 

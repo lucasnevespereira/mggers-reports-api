@@ -4,11 +4,12 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"mggers-reports-api/utils"
 )
 
-func Init(ctx context.Context) (*mongo.Client, error) {
+func Connect(ctx context.Context, conf utils.MongoConfig) (*mongo.Client, error) {
 
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://mongodb"))
+	client, err := mongo.NewClient(options.Client().ApplyURI(conf.URI))
 	if err != nil {
 		return nil, err
 	}
