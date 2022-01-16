@@ -2,45 +2,43 @@ package utils
 
 import (
 	"github.com/spf13/viper"
-	"strings"
 )
 
 type AppConfig struct {
-	Env             string
-	Port            int
-	PostgreHost     string
-	PostgrePort     int
-	PostgreUser     string
-	PostgrePassword string
-	PostgreDbName   string
-	PostgreSsl      string
+	AppName string
+	Version string
+	Env  string
+	Port int
+	Mongo MongoConfig
+}
+
+type MongoConfig struct {
+	URI string
+	Database string
+	Collection string
 }
 
 func LoadConfig() AppConfig {
 	viper.AutomaticEnv()
-	viper.SetEnvPrefix("conf")
-	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-
+	viper.SetDefault("app_name", "mggers-reports-api")
+	viper.SetDefault("version", "0.0")
 	viper.SetDefault("env", "dev")
-	viper.SetDefault("port", 5002)
+	viper.SetDefault("port", 9000)
 
-	viper.SetDefault("pg.host", "localhost")
-	viper.SetDefault("pg.port", 5432)
-	viper.SetDefault("pg.username", "__")
-	viper.SetDefault("pg.password", "__")
-	viper.SetDefault("pg.database", "__")
-	viper.SetDefault("pg.ssl", "disable")
+	viper.SetDefault("mongo_server", "mongodb://reports-database:27017")
+	viper.SetDefault("mongo_database", "mggers-reports")
+	viper.SetDefault("mongo_collection", "Reports")
 
 	conf := AppConfig{}
+
+	conf.Env = viper.GetString("app_name")
+	conf.Env = viper.GetString("version")
 	conf.Env = viper.GetString("env")
 	conf.Port = viper.GetInt("port")
 
-	conf.PostgreHost = viper.GetString("pg.host")
-	conf.PostgrePort = viper.GetInt("pg.port")
-	conf.PostgreUser = viper.GetString("pg.username")
-	conf.PostgrePassword = viper.GetString("pg.password")
-	conf.PostgreDbName = viper.GetString("pg.database")
-	conf.PostgreSsl = viper.GetString("pg.ssl")
+	conf.Mongo.URI = viper.GetString("mongo_server")
+	conf.Mongo.Database = viper.GetString("mongo_database")
+	conf.Mongo.Collection = viper.GetString("mongo_collection")
 
 	return conf
 }

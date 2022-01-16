@@ -2,17 +2,20 @@ package utils
 
 import (
 	log "github.com/sirupsen/logrus"
-	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 	"os"
 )
 
 var Logger = &log.Logger{
-	Out: os.Stderr,
+	Out: os.Stdout,
 	Level: log.DebugLevel,
-	Formatter: &prefixed.TextFormatter{
-		DisableColors: false,
-		DisableTimestamp: false,
+	Formatter: &log.JSONFormatter{
+		TimestampFormat:   "",
+		DisableTimestamp:  false,
+		DisableHTMLEscape: false,
+		DataKey:           "",
+		FieldMap:          nil,
+		CallerPrettyfier:  nil,
+		PrettyPrint:       false,
 	},
 }
-
 
