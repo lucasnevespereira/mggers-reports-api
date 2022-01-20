@@ -18,11 +18,18 @@ func Connect(ctx context.Context, conf utils.MongoConfig) (*mongo.Client, error)
 	if err != nil {
 		return nil, err
 	}
-	defer client.Disconnect(ctx)
+
+	defer func(client *mongo.Client, ctx context.Context) {
+		err := client.Disconnect(ctx)
+		if err != nil {
+			utils.Logger.Errorf("disconnect: %v", err)
+		}
+	}(client, ctx)
 
 	return client, nil
 }
 
-func New(client *mongo.Client, dbName string) *mongo.Database {
-	return client.Database(dbName)
+
+func New(client *mongo.Client, conf utils.MongoConfig) *mongo.Database {
+	return client.Database(conf.Database)
 }

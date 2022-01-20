@@ -27,24 +27,26 @@ func (app *App) setup() error {
 	utils.Logger.Info("setting up app")
 
 	conf := utils.LoadConfig()
+	app.Config = conf
+
 	client, err := database.Connect(context.Background(), conf.Mongo)
 	if err != nil {
 		return err
 	}
 
-	db := database.New(client, conf.Mongo.Database)
+	db := database.New(client, conf.Mongo)
+	utils.Logger.Info("db -> %v", db)
 
-	service := services.New(db)
+	service := services.New(db, conf.Mongo)
 	r := router.New(service)
 
 	app.Router = r
-	app.Config = conf
 
 	return nil
 }
 
 func (app *App) Run() {
 	port := app.Config.Port
-	utils.Logger.Infof("Running %s on port %d", app.Config.AppName, port)
+	utils.Logger.Infof("Running app on port %d", port)
 	app.Router.Run(fmt.Sprintf(":%d", port))
 }

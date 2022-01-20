@@ -12,3 +12,9 @@ type Report struct {
 	Longitude   int                `json:"longitude, omitempty" bson:"longitude, omitempty`
 	ReportedAt  time.Time          `json:"reported_at, omitempty" bson:"reported_at, omitempty`
 }
+
+type ReportRequest struct {
+	Description string `json:"description"`
+	Latitude    int    `json:"latitude"`
+	Longitude   int    `json:"longitude"`
+}
