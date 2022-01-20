@@ -25,7 +25,7 @@ func LoadConfig() AppConfig {
 	viper.SetDefault("env", "dev")
 	viper.SetDefault("port", 9000)
 
-	viper.SetDefault("mongo_server", "mongodb://mongodb")
+	viper.SetDefault("mongo_server", "mongodb://reports-database:27017")
 	viper.SetDefault("mongo_database", "mggers-reports")
 	viper.SetDefault("mongo_collection", "Reports")
 

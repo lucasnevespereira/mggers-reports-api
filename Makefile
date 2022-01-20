@@ -24,3 +24,6 @@ db-logs:
 
 db-logs-error:
 	docker-compose logs db | grep error
+
+enter-database:
+	docker exec -it reports-database mongo
