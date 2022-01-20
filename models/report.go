@@ -14,7 +14,8 @@ type Report struct {
 }
 
 type ReportRequest struct {
-	Description string `json:"description"`
-	Latitude    int    `json:"latitude"`
-	Longitude   int    `json:"longitude"`
+	Description string    `json:"description"`
+	Latitude    int       `json:"latitude"`
+	Longitude   int       `json:"longitude"`
+	ReportedAt  time.Time `json:"reported_at"`
 }

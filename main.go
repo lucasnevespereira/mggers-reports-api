@@ -2,13 +2,15 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"mggers-reports-api/models"
+	"mggers-reports-api/handlers"
 	"mggers-reports-api/utils"
+	"net/http"
 	"time"
 )
+
 
 func main() {
 
@@ -29,16 +31,12 @@ func main() {
 	db := client.Database(conf.Mongo.Database)
 	reportsCollection := db.Collection(conf.Mongo.Collection)
 
-	one, err := reportsCollection.InsertOne(ctx, models.Report{
-		Description: "single desc",
-		Latitude:    34,
-		Longitude:   123,
-		ReportedAt:  time.Now(),
-	})
-	if err != nil {
-		utils.Logger.Errorf("inserting one: %v", err)
-	}
 
-	fmt.Println(one.InsertedID)
+
+	router := gin.New()
+	router.GET("/find", handlers.GetReportsEndpoint(reportsCollection))
+	router.GET("/insert", handlers.InsertOneReport(reportsCollection))
+
+	http.ListenAndServe(":9000", router)
 
 }
