@@ -5,19 +5,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"mggers-reports-api/models"
+	"mggers-reports-api/internal/models"
+	"mggers-reports-api/internal/services"
 	"mggers-reports-api/utils"
 	"net/http"
 	"time"
 )
 
-func GetReportsEndpoint(col *mongo.Collection) gin.HandlerFunc {
+func GetReportsEndpoint(service *services.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		var results []models.Report
-
-		find, err := col.Find(c.Request.Context(), bson.D{})
+		find, err := service.DB.Find(c.Request.Context(), bson.D{})
 		if err != nil {
 			utils.Logger.Errorf("finding report: %v", find)
 		}
@@ -41,8 +40,9 @@ func GetReportsEndpoint(col *mongo.Collection) gin.HandlerFunc {
 	}
 }
 
-func InsertOneReport(col *mongo.Collection) gin.HandlerFunc {
+func InsertOneReport(service *services.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
+
 		r := models.Report{
 			ID: primitive.NewObjectID(),
 			Description: "test description",
@@ -51,7 +51,7 @@ func InsertOneReport(col *mongo.Collection) gin.HandlerFunc {
 			ReportedAt:  time.Now(),
 		}
 
-		one, err := col.InsertOne(c.Request.Context(), r)
+		one, err := service.DB.InsertOne(c.Request.Context(), r)
 		if err != nil {
 			utils.Logger.Errorf("inserting report: %v", one)
 		}
