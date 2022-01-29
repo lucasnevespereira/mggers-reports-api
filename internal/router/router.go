@@ -13,6 +13,7 @@ func Init(service *services.Service) *gin.Engine {
 }
 
 func setupRoutes(r *gin.Engine, s *services.Service) {
-	r.GET("/api/find", handlers.GetReportsEndpoint(s))
-	r.GET("/api/insert", handlers.InsertOneReport(s))
+	r.GET("/", handlers.GetHealth())
+	r.POST("/api/create", handlers.CreateReport(s))
+	r.GET("/api/reports", handlers.GetReports(s))
 }
