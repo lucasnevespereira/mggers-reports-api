@@ -18,8 +18,7 @@ func (s *Service) Create(ctx context.Context, request models.ReportRequest) (*mo
 	r := models.Report{
 		ID:          primitive.NewObjectID(),
 		Description: request.Description,
-		Latitude:    request.Latitude,
-		Longitude:   request.Longitude,
+		Position:    request.Position,
 		ReportedAt:  request.ReportedAt,
 	}
 
