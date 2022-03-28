@@ -11,6 +11,7 @@ import (
 type ReportService interface {
 	Create(request models.ReportRequest) (*models.Report, error)
 	GetAll(ctx context.Context) (*[]models.Report, error)
+	DeleteById(ctx context.Context, reportId string) error
 }
 
 func (s *Service) Create(ctx context.Context, request models.ReportRequest) (*models.Report, error) {
@@ -52,4 +53,15 @@ func (s *Service) GetAll(ctx context.Context) (*[]models.Report, error) {
 	}
 
 	return &results, nil
+}
+
+func (s *Service) Delete(ctx context.Context, reportId string) error {
+	_, err := s.DB.DeleteOne(ctx, reportId)
+	if err != nil {
+		utils.Logger.Errorf("db delete one: %v", err)
+		return err
+	}
+
+	return nil
+
 }

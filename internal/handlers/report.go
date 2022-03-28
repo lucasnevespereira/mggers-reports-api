@@ -7,6 +7,13 @@ import (
 	"net/http"
 )
 
+func GetHealth() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"status": "up",
+		})
+	}
+}
 
 func CreateReport(service *services.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -46,8 +53,15 @@ func GetReports(service *services.Service) gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, gin.H{
-			"status": http.StatusOK,
+			"status":  http.StatusOK,
 			"results": res,
 		})
+	}
+}
+
+func DeleteReport(service *services.Service) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		reportId := c.Param("reportId")
+		service.Delete(c, reportId)
 	}
 }

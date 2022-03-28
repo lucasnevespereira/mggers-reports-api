@@ -14,6 +14,8 @@ func Init(service *services.Service) *gin.Engine {
 
 func setupRoutes(r *gin.Engine, s *services.Service) {
 	r.GET("/", handlers.GetHealth())
-	r.POST("/api/create", handlers.CreateReport(s))
-	r.GET("/api/reports", handlers.GetReports(s))
+	reports := r.Group("/reports")
+	reports.POST("/create", handlers.CreateReport(s))
+	reports.GET("/reports", handlers.GetReports(s))
+	reports.GET("/delete/:reportId", handlers.DeleteReport(s))
 }
