@@ -1,5 +1,5 @@
 run:
-	go run *.go
+	go run cmd/main.go
 
 dev:
 	docker-compose up
@@ -10,9 +10,6 @@ start:
 stop:
 	docker-compose down
 
-stop-clean:
-	docker-compose down -v
-
 rebuild:
 	docker-compose up --build
 
@@ -22,11 +19,6 @@ api-logs:
 api-logs-error:
 	docker-compose logs api | grep error
 
-db-logs:
-	docker-compose logs db
+api-logs-info:
+	docker-compose logs api | grep info
 
-db-logs-error:
-	docker-compose logs db | grep error
-
-enter-database:
-	docker exec -it reports-database mongo

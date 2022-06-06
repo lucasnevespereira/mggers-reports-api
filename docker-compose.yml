@@ -1,28 +1,15 @@
 version: "3.8"
 
 services:
-  db:
-    image: mongo
-    restart: always
-    container_name: "reports-database"
-    ports:
-      - "27017:27017"
-    networks:
-      - reports-network
-    volumes:
-      - mongodata:/data/db
   api:
     build: .
     container_name: "reports-api"
+    env_file:
+      - local/env.sh
     ports:
       - "9000:9000"
-    depends_on:
-      - db
     networks:
       - reports-network
-
-volumes:
-  mongodata:
 
 networks:
   reports-network:

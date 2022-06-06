@@ -10,7 +10,7 @@ import (
 func GetHealth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"status": "up",
+			"status": "alive",
 		})
 	}
 }
@@ -39,10 +39,8 @@ func CreateReport(service *services.Service) gin.HandlerFunc {
 		c.JSON(http.StatusCreated, res)
 	}
 }
-
 func GetReports(service *services.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
-
 		res, err := service.GetAll(c.Request.Context())
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{

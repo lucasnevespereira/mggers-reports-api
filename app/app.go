@@ -24,7 +24,6 @@ func New() *App {
 
 func (app *App) Run() error {
 	utils.Logger.Info("Setting up app")
-
 	mongo, err := database.NewMongoClient(app.Config.Mongo)
 	if err != nil {
 		return errors.Wrap(err, "database.NewMongoClient")
