@@ -23,7 +23,7 @@ func New() *App {
 }
 
 func (app *App) Run() error {
-	utils.Logger.Info("Setting up app")
+	utils.Logger.Info("Setting up ", app.Config.AppName)
 	mongo, err := database.NewMongoClient(app.Config.Mongo)
 	if err != nil {
 		return errors.Wrap(err, "database.NewMongoClient")
@@ -44,7 +44,7 @@ func (app *App) Run() error {
 
 	appRouter := router.Init(reportService)
 
-	utils.Logger.Info(fmt.Sprintf("Running %v on port %d", app.Config.AppName, app.Config.Port))
+	utils.Logger.Info(fmt.Sprintf("Running %v[%v] on port %d", app.Config.AppName, app.Config.Env, app.Config.Port))
 
 	err = http.ListenAndServe(fmt.Sprintf(":%d", app.Config.Port), appRouter)
 	if err != nil {

@@ -1,24 +1,9 @@
 run:
 	go run cmd/main.go
 
-dev:
-	docker-compose up
+push:
+	docker tag reports-api_api gcr.io/mggers-app/reports-api_api
+	docker push  gcr.io/mggers-app/reports-api_api
 
-start:
-	docker-compose up -d
-
-stop:
-	docker-compose down
-
-rebuild:
-	docker-compose up --build
-
-api-logs:
-	docker-compose logs api
-
-api-logs-error:
-	docker-compose logs api | grep error
-
-api-logs-info:
-	docker-compose logs api | grep info
-
+deploy:
+	gcloud run deploy reports-api --image gcr.io/mggers-app/reports-api_api

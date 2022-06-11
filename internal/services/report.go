@@ -36,7 +36,7 @@ func (s *Service) Create(ctx context.Context, request models.ReportRequest) (*mo
 	one, err := s.DB.InsertOne(ctx, r)
 
 	if err != nil {
-		utils.Logger.Errorf("inserting report: %v", one)
+		utils.Logger.Errorf("inserting report: %v", err)
 		return nil, err
 	}
 
@@ -50,7 +50,7 @@ func (s *Service) GetAll(ctx context.Context) (*[]models.Report, error) {
 	var results []models.Report
 	find, err := s.DB.Find(ctx, bson.D{})
 	if err != nil {
-		utils.Logger.Errorf("finding report: %v", find)
+		utils.Logger.Errorf("finding report: %v", err)
 		return nil, err
 	}
 

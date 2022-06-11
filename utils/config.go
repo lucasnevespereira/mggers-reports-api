@@ -23,12 +23,15 @@ func LoadConfig() AppConfig {
 
 	conf.AppName = "mggers-reports-api"
 	conf.Version = "0.0"
-	conf.Env = "dev"
+	conf.Env = os.Getenv("ENV")
 	conf.Port = 9000
-
 	conf.Mongo.URI = os.Getenv("MONGO_SERVER")
 	conf.Mongo.Database = "mggers-database"
-	conf.Mongo.Collection = "Reports"
+	reportsCol := "reports"
+	if conf.Env == "dev" {
+		reportsCol = "reports-dev"
+	}
+	conf.Mongo.Collection = reportsCol
 
 	return conf
 }
