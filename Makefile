@@ -1,32 +1,9 @@
 run:
-	go run *.go
+	go run cmd/main.go
 
-dev:
-	docker-compose up
+push:
+	docker tag reports-api_api gcr.io/mggers-app/reports-api_api
+	docker push  gcr.io/mggers-app/reports-api_api
 
-start:
-	docker-compose up -d
-
-stop:
-	docker-compose down
-
-stop-clean:
-	docker-compose down -v
-
-rebuild:
-	docker-compose up --build
-
-api-logs:
-	docker-compose logs api
-
-api-logs-error:
-	docker-compose logs api | grep error
-
-db-logs:
-	docker-compose logs db
-
-db-logs-error:
-	docker-compose logs db | grep error
-
-enter-database:
-	docker exec -it reports-database mongo
+deploy:
+	gcloud run deploy reports-api --image gcr.io/mggers-app/reports-api_api

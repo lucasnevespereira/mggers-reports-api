@@ -4,6 +4,8 @@ import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"mggers-reports-api/internal/models"
 	"mggers-reports-api/utils"
 )
@@ -23,9 +25,18 @@ func (s *Service) Create(ctx context.Context, request models.ReportRequest) (*mo
 		ReportedAt:  request.ReportedAt,
 	}
 
+	// TTL index
+	index := mongo.IndexModel{
+		Keys:    bson.M{"reportedAt": 1},
+		Options: options.Index().SetExpireAfterSeconds(5),
+	}
+
+	s.DB.Indexes().CreateOne(ctx, index)
+
 	one, err := s.DB.InsertOne(ctx, r)
+
 	if err != nil {
-		utils.Logger.Errorf("inserting report: %v", one)
+		utils.Logger.Errorf("inserting report: %v", err)
 		return nil, err
 	}
 
@@ -39,7 +50,7 @@ func (s *Service) GetAll(ctx context.Context) (*[]models.Report, error) {
 	var results []models.Report
 	find, err := s.DB.Find(ctx, bson.D{})
 	if err != nil {
-		utils.Logger.Errorf("finding report: %v", find)
+		utils.Logger.Errorf("finding report: %v", err)
 		return nil, err
 	}
 

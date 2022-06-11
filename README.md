@@ -3,27 +3,19 @@
 ### Usage
 
 ```
-make start
+source local/env.sh
 ```
 
 ```
-make stop
+make run
 ```
 
-##### Docker logs
-```
-make api-logs
-```
-
-```
-make db-logs
-```
-
-### Use Envs
+### Set Envs
 
 Create a `/local` directory with a `env.sh` and export an env variable
 ```
-export test_env=postgres
+export ENV=dev
+export MONGO_SERVER="mongodb://localhost:27017"
 ```
 
 Source file
@@ -33,5 +25,6 @@ source local/env.sh
 
 Use in code
 ```
-os.GetEnv("test_env")
+os.GetEnv("ENV")
+os.GetEnv("MONGO_SERVER")
 ```
